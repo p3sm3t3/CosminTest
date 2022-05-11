@@ -1,0 +1,89 @@
+﻿
+@model AuditInspect.Models.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+     Layout = "~/Pages/Shared/_LayoutUnauthorized.cshtml";
+}
+
+
+<div class="register-box">
+  <div class="card card-outline card-primary">
+    <div class="card-header text-center">
+      <a href="../../index2.html" class="h1"><b>Audit</b>Inspect</a>
+    </div>
+    <div class="card-body">
+      <p class="login-box-msg">Inregistrare cont nou</p>
+
+      <form method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="input-group mb-3">
+          <input type="email" class="form-control"  asp-for="Email" placeholder="Email">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control"  asp-for="PhoneNumber" placeholder="Telefon">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+            <select asp-for="DepartamentId"  class="form-control" >
+            @foreach(var item in ViewBag.data)
+            {
+                <option value="@item.Id">@item.DepartamentName</option> 
+            }
+                    
+            </select>
+            <span asp-validation-for="DepartamentId" class="text-danger"></span>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password" class="form-control" asp-for="Password" placeholder="Parola">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password" class="form-control" asp-for="ConfirmPassword" placeholder="Reintroduce parola">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <div class="icheck-primary">
+              <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+              <label for="agreeTerms">
+               Sunt de acord cu  <a href="#">termeni</a>
+              </label>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary btn-block">Inregistrare</button>
+          </div>
+          <!-- /.col -->
+        </div>
+      </form>
+
+      <div class="social-auth-links text-center">
+        <a href="#" class="btn btn-block btn-danger">
+          <i class="fab fa-google-plus mr-2"></i>
+          Inregistrare cu Google+
+        </a>
+      </div>
+
+      <a asp-action="Login" class="text-center">Am deja un cont</a>
+    </div>
+    <!-- /.form-box -->
+  </div><!-- /.card -->
+</div>

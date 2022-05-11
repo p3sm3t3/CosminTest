@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20210714141224_hh43.cs" />
+    <Compile Remove="Data\Migrations\20210714141224_hh43.Designer.cs" />
+    <Compile Remove="Migrations\20210722072228_role_add.cs" />
+    <Compile Remove="Migrations\20210722072228_role_add.Designer.cs" />
+    <Compile Remove="Migrations\20210722073300_add_role.cs" />
+    <Compile Remove="Migrations\20210722073300_add_role.Designer.cs" />
+    <Compile Remove="Migrations\20210722075804_Add_role.cs" />
+    <Compile Remove="Migrations\20210722075804_Add_role.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="3.1.10" />
+    <PackageReference Include="Otp.NET" Version="1.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Initializer\" />
+    <Folder Include="Data\Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AuditInspect.Models\AuditInspect.Models.csproj" />
+    <ProjectReference Include="..\AuditInspect.Utility\AuditInspect.Utility.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,159 @@
+﻿@model AuditInspect.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Pages/Shared/_LayoutUnauthorized.cshtml";
+}
+
+  
+
+<div class="login-box">
+  <!-- /.login-logo -->
+  <div class="card card-outline card-primary">
+    <div class="card-header text-center">
+      <a href="../../index2.html" class="h1"><b>Audit</b>Inspect</a>
+    </div>
+    <div class="card-body">
+        <p class="login-box-msg">Autentificare</p>
+
+      <form method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="input-group mb-3">
+          <input type="email" class="form-control" asp-for="Email" placeholder="Email">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password" class="form-control" asp-for="Password" placeholder="Parola">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" asp-for="OTPToken" placeholder="Cod Autentificare">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <div class="icheck-primary">
+              <input type="checkbox" id="remember" asp-for="RememberMe">
+              <label for="remember">
+                Retine
+              </label>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary btn-block">Autentificare</button>
+          </div>
+          <!-- /.col -->
+        </div>
+      </form>
+      <div class="form-group">
+        <label>Utilizator:</label>
+            <select id="UserId" class="form-control" required " >
+                <option selected="selected" value="" hidden >Selecteaza Utilizatorul</option>
+                    @foreach(var item in ViewBag.UserInfo)
+                    {
+                       <option  value="@item.Id">@item.Email</option> 
+                    }
+           </select>
+      </div>
+                <div class="form-group">
+                  <label>Date and time:</label>
+                        <input id="reservationdatetime"  type="datetime-local" class="form-control datetimepicker-input"/>
+                       
+                </div>
+      <div class="col-12">
+            <button onclick="GenereateOTP()" type="submit" class="btn btn-primary btn-block">Genereaza</button>
+      </div>
+      <p id="demo"></p>
+      <p id="OtpCode"></p>
+      <p class="mb-1">
+       <a class="dropdown-item" asp-area="Dashboard" asp-controller="Account" asp-action="OTP">Forms </a>
+      </p>
+      <p class="mb-0">
+        <a asp-action="Register" class="text-center">Inregistrare</a>
+      </p>
+    </div>
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+</div>
+
+@section Scripts {
+   @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+  
+    <script>
+        var interval ;
+     function GenereateOTP()
+        {
+            console.log($('#UserId option:selected').val());
+            console.log($('#reservationdatetime').val());
+               $.ajax({
+                   type:"POST",
+                   url:  "@Url.Action("GenereateOTP")",
+                   data: {UserId :$('#UserId option:selected').val(),DateTimeStart:$('#reservationdatetime').val()}
+                   }).done(function(result){
+                        console.log(result);
+                        var obj = jQuery.parseJSON(JSON.stringify(result));
+                        clearInterval(interval);
+                       Timper(obj.dateTimeStart,obj.otpGenerate);
+                     
+              });
+        }
+         
+        function Timper(Data,otpCode)
+        {
+         
+          var countDownDate = new Date(Data).getTime();
+
+        // Update the count down every 1 second
+           interval = setInterval(function() {
+
+          // Get today's date and time
+          var now = new Date().getTime();
+
+          // Find the distance between now and the count down date
+          var distance = countDownDate - now;
+          
+
+          // Time calculations for days, hours, minutes and seconds
+          var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+          document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+          + minutes + "m " + seconds + "s ";
+           document.getElementById("OtpCode").innerHTML= "";
+         
+            if (distance > 30) {
+            document.getElementById("demo").innerHTML ="Valid in " + days + "d " + hours + "h "
+          + minutes + "m " + seconds  + "s ";
+            }
+             if (hours == 0 && minutes == 0 && Math.floor((distance % (1000 * 60)) / 1000) < 30) {
+           
+            document.getElementById("demo").innerHTML ="OTP VALID  " + seconds + "s ";
+            document.getElementById("OtpCode").innerHTML = otpCode;
+            }
+
+             if (distance < 0) {
+            clearInterval(interval);
+            document.getElementById("demo").innerHTML = "EXPIRED";
+            document.getElementById("OtpCode").innerHTML= "";
+          }
+        }, 1000);
+        }
+
+        </script>
+  }
